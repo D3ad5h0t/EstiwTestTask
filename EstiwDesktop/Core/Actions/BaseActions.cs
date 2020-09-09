@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EstiwDesktop.ViewModels
+namespace EstiwDesktop.Core.Actions
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseActions : INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -14,5 +15,7 @@ namespace EstiwDesktop.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
         }
+
+        public object Clone() => this.MemberwiseClone();
     }
 }

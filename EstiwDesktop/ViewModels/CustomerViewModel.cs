@@ -1,15 +1,13 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.RightsManagement;
-using System.Windows.Data;
+using System.Windows.Controls;
+using EstiwDesktop.Core.Actions;
 using EstiwDesktop.Core.Commands;
 using EstiwDesktop.Models;
 
 namespace EstiwDesktop.ViewModels
 {
-    class ApplicationViewModel : BaseViewModel
+    class CustomerViewModel : BaseActions
     {
         public ObservableCollection<Customer> Customers { get; set; }
 
@@ -41,13 +39,7 @@ namespace EstiwDesktop.ViewModels
         {
             if (customer != null)
             {
-                SelectedCustomerCopy = new Customer
-                {
-                    LastName = customer.LastName,
-                    FirstName = customer.FirstName,
-                    Phone = customer.Phone,
-                    Address = customer.Address
-                };
+                SelectedCustomerCopy = customer.Clone() as Customer;
             }
         }
 
@@ -85,10 +77,15 @@ namespace EstiwDesktop.ViewModels
 
         public RelayCommand SaveCommand => _saveCommand ??= new RelayCommand(obj =>
             {
-                if (obj is Customer customer)
+                var oldCustomer = Customers.FirstOrDefault(x => x.Id == SelectedCustomer.Id);
+
+                if (oldCustomer != null)
                 {
-                    SelectedCustomer = SelectedCustomerCopy;
-                    OnPropertyChanged("SelectedCustomer");
+                    oldCustomer.Id = SelectedCustomerCopy.Id;
+                    oldCustomer.FirstName = SelectedCustomerCopy.FirstName;
+                    oldCustomer.LastName = SelectedCustomerCopy.LastName;
+                    oldCustomer.Address = SelectedCustomerCopy.Address;
+                    oldCustomer.Phone = SelectedCustomerCopy.Phone;
                 }
             });
 
@@ -98,19 +95,23 @@ namespace EstiwDesktop.ViewModels
 
         private RelayCommand _cancelCommand;
 
-        public RelayCommand CancelCommand => _cancelCommand ??= new RelayCommand(obj => SelectedCustomerCopy = SelectedCustomer);
+        public RelayCommand CancelCommand => _cancelCommand ??= new RelayCommand(obj =>
+        {
+            SelectedCustomerCopy = SelectedCustomer.Clone() as Customer;
+        });
 
         #endregion
 
         /// <summary>
         /// Добавить получение пользователей через сервер
         /// </summary>
-        public ApplicationViewModel()
+        public CustomerViewModel()
         {
             Customers = new ObservableCollection<Customer>
             {
                 new Customer
                 {
+                    Id = 1,
                     FirstName = "Mihail",
                     LastName = "Ivanov",
                     Phone = "74333",
@@ -118,6 +119,7 @@ namespace EstiwDesktop.ViewModels
                 },
                 new Customer
                 {
+                    Id = 2,
                     FirstName = "Alex",
                     LastName = "Roman",
                     Phone = "444522",
@@ -125,6 +127,7 @@ namespace EstiwDesktop.ViewModels
                 },
                 new Customer
                 {
+                    Id = 3,
                     FirstName = "Bill",
                     LastName = "Clinton",
                     Phone = "990072171",

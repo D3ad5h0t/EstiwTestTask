@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using EstiwDesktop.Core.Actions;
 
 namespace EstiwDesktop.Models
 {
-    public class Customer
+    public class Customer : BaseActions
     {
-        /// <summary>
-        /// Нужно Id
-        /// </summary>
         private string _firstName;
         private string _lastName;
         private string _phone;
         private string _address;
+
+        public long Id { get; set; }
 
         public string FirstName
         {
@@ -50,17 +50,6 @@ namespace EstiwDesktop.Models
             {
                 _address = value;
                 OnPropertyChanged("Address");
-            }
-        }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
         }
     }

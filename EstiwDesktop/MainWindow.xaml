@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:estiwDesktop="clr-namespace:EstiwDesktop"
+        xmlns:core="clr-namespace:EstiwDesktop.Core"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="600">
     <Window.Resources>
@@ -11,23 +12,23 @@
             <Setter Property="FontSize" Value="25"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         </Style>
-        
+
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="12">
             </Setter>
         </Style>
-        
+
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="12"></Setter>
             <Setter Property="Margin" Value="5"></Setter>
         </Style>
-        
+
         <Style TargetType="Button">
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
-        <estiwDesktop:NameConverter x:Key="customerInfoConverter"/>
+        <core:NameConverter x:Key="CustomerInfoConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -42,19 +43,26 @@
 
         <Label Content="Заказчики"></Label>
 
-        <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding Customers}"
-                 SelectedItem="{Binding SelectedCustomer}">
+        <ListBox 
+            Grid.Row="1"
+            Grid.Column="0"
+            ItemsSource="{Binding Customers}"
+            SelectedItem="{Binding SelectedCustomer}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Margin="5">
                         <TextBlock>
                             <TextBlock.Text>
                                 <MultiBinding
-                                    Converter="{StaticResource customerInfoConverter}"
+                                    Converter="{StaticResource CustomerInfoConverter}"
                                     ConverterParameter="FormatCustomerInfo">
-                                    <Binding Path="LastName"/>
-                                    <Binding Path="FirstName"/>
+                                    <Binding 
+                                        Path="LastName"
+                                        UpdateSourceTrigger="PropertyChanged"/>
+
+                                    <Binding 
+                                        Path="FirstName"
+                                        UpdateSourceTrigger="PropertyChanged"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
@@ -63,7 +71,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel 
+            Grid.Row="2" 
+            Orientation="Horizontal" 
+            HorizontalAlignment="Right">
             <Button Command="{Binding AddCommand}">+</Button>
             <Button 
                 Command="{Binding RemoveCommand}"
@@ -71,7 +82,10 @@
                 >-</Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedCustomerCopy}">
+        <StackPanel 
+            Grid.Row="1" 
+            Grid.Column="1" 
+            DataContext="{Binding SelectedCustomerCopy}">
             <TextBlock 
                 Text="Информация о заказчике" 
                 FontSize="16"
@@ -84,12 +98,12 @@
             <TextBox 
                 Text="{Binding Path=LastName}"
                 Margin="5"/>
-            
+
             <TextBlock 
                 Text="Имя"
                 Margin="5"/>
             <TextBox Text="{Binding Path=FirstName}"/>
-            
+
             <TextBlock 
                 Text="Телефон"
                 Margin="5"/>
