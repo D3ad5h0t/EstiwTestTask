@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:estiwDesktop="clr-namespace:EstiwDesktop"
         xmlns:core="clr-namespace:EstiwDesktop.Core"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         Title="MainWindow" Height="400" Width="600">
     <Window.Resources>
@@ -14,13 +15,12 @@
         </Style>
 
         <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12">
-            </Setter>
+            <Setter Property="FontSize" Value="12"/>
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="12"></Setter>
-            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
 
         <Style TargetType="Button">
@@ -32,8 +32,8 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.8*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -41,7 +41,7 @@
             <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Заказчики"></Label>
+        <Label Content="Заказчики"/>
 
         <ListBox 
             Grid.Row="1"
@@ -80,6 +80,12 @@
                 Command="{Binding RemoveCommand}"
                 CommandParameter="{Binding SelectedCustomer}"
                 >-</Button>
+            <Button
+                FontSize="11"
+                Command="{Binding DetailsCommand}"
+                CommandParameter="{Binding SelectedCustomer}">
+                Детали
+            </Button>
         </StackPanel>
 
         <StackPanel 

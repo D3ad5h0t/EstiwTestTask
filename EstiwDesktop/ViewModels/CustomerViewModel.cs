@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Controls;
 using EstiwDesktop.Core.Actions;
 using EstiwDesktop.Core.Commands;
 using EstiwDesktop.Models;
@@ -98,6 +97,21 @@ namespace EstiwDesktop.ViewModels
         public RelayCommand CancelCommand => _cancelCommand ??= new RelayCommand(obj =>
         {
             SelectedCustomerCopy = SelectedCustomer.Clone() as Customer;
+        });
+
+        #endregion
+
+        #region Команда для отображения подробной информации о заказчике
+
+        private RelayCommand _detailsCommand;
+
+        public RelayCommand DetailsCommand => _detailsCommand ??= new RelayCommand(obj =>
+        {
+            if (obj is Customer customer)
+            {
+                DetailsWindow window = new DetailsWindow(customer);
+                window.Show();
+            }
         });
 
         #endregion
