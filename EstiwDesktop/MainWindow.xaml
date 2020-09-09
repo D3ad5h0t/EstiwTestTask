@@ -1,0 +1,118 @@
+﻿<Window x:Class="EstiwDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:estiwDesktop="clr-namespace:EstiwDesktop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="600">
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="25"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+        
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12">
+            </Setter>
+        </Style>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="12"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <estiwDesktop:NameConverter x:Key="customerInfoConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Заказчики"></Label>
+
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Customers}"
+                 SelectedItem="{Binding SelectedCustomer}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding
+                                    Converter="{StaticResource customerInfoConverter}"
+                                    ConverterParameter="FormatCustomerInfo">
+                                    <Binding Path="LastName"/>
+                                    <Binding Path="FirstName"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding AddCommand}">+</Button>
+            <Button 
+                Command="{Binding RemoveCommand}"
+                CommandParameter="{Binding SelectedCustomer}"
+                >-</Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" DataContext="{Binding SelectedCustomerCopy}">
+            <TextBlock 
+                Text="Информация о заказчике" 
+                FontSize="16"
+                Padding="5"
+                HorizontalAlignment="Center"/>
+
+            <TextBlock 
+                Text="Фамилия"
+                Margin="5"/>
+            <TextBox 
+                Text="{Binding Path=LastName}"
+                Margin="5"/>
+            
+            <TextBlock 
+                Text="Имя"
+                Margin="5"/>
+            <TextBox Text="{Binding Path=FirstName}"/>
+            
+            <TextBlock 
+                Text="Телефон"
+                Margin="5"/>
+            <TextBox Text="{Binding Path=Phone}"/>
+
+            <TextBlock 
+                Text="Адрес"
+                Margin="5"/>
+            <TextBox Text="{Binding Path=Address}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button 
+                Command="{Binding CancelCommand}"
+                Width="70">
+                Отмена
+            </Button>
+            <Button 
+                Command="{Binding SaveCommand}"
+                CommandParameter="{Binding SelectedCustomer}"
+                Width="70">
+                Сохранить
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
